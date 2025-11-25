@@ -26,8 +26,8 @@ import sys
 
 from kmeans_project import __version__
 
-__author__ = "Konrad WĹ‚odarczyk"
-__copyright__ = "Konrad WĹ‚odarczyk"
+__author__ = "Konrad Włodarczyk, Mateusz Purol"
+__copyright__ = "Konrad Włodarczyk, Mateusz Purol"
 __license__ = "MIT"
 
 _logger = logging.getLogger(__name__)
