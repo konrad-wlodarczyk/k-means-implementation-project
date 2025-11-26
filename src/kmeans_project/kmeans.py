@@ -28,6 +28,18 @@ class KMeans:
         self.labels_ = None
         self.intertia_ = None
         self.n_iter_ = None
+        
+        if n_clusters <= 0:
+            raise ValueError("n_clusters must be a positive integer.")
+        
+        if init not in ("random", "k-means++"):
+            raise ValueError("init must be 'random' or 'k-means++'.")
+        
+        if max_iter <= 0:
+            raise ValueError("max_iter must be > 0.")
+        
+        if tol <= 0:
+            raise ValueError("tol must be > 0.")
 
     def _initialize_centroids(self, X: np.ndarray) -> np.ndarray:
         """
