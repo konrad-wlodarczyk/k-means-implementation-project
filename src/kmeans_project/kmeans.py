@@ -54,6 +54,49 @@ class KMeans:
         Returns:
             np.ndarray: _description_
         """        
+        if X.ndim != 2:
+            raise ValueError("X must be a 2D array of shape (n_samples, n_features).")
+        
+        n_samples = X.shape[0]
+        rng = np.random.default_rng(self.random_state)
+        
+        if self.init == "random":
+            indices = rng.choice(n_samples, size=self.n_clusters, replace=False)
+            return X[indices].copy()
+        
+        elif self.init == "k-means++":
+            # Choose first centroid randomly
+            indices = []
+            first_index = rng.choice(n_samples)
+            indices.append(first_index)
+            
+            # Select the remianing k-1 centroids
+            for _ in range(1, self.n_clusters):
+                # Compute squared distances to nearest already-chosen centroid
+                existing_centroids = X[indices]
+                distances = np.min(
+                    np.sum((X[:, np.newaxis, :] - existing_centroids)**2, axis=2),
+                    axis=1,
+                )
+                
+                # Probability proportional to squared distance
+                if np.sum(distances) == 0:
+                    # All of the points are identical - choose randomly
+                    new_index = rng.choice(n_samples)
+                else:
+                    probabilities = distances / distances.sum()
+                    new_index = rng.choice(n_samples, p=probabilities)
+                    
+                indices.append(new_index)
+            
+            return X[indices].copy()
+        
+        else:
+            raise ValueError(
+                "Unknown initialization method: "
+                f"{self.init!r}. Supported options are 'random' and 'k-means++'."
+            )
+        
         
         raise NotImplementedError("Centroid init not implemented yet.")
     
