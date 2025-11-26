@@ -97,9 +97,6 @@ class KMeans:
                 f"{self.init!r}. Supported options are 'random' and 'k-means++'."
             )
         
-        
-        raise NotImplementedError("Centroid init not implemented yet.")
-    
     def fit(self, X: np.ndarray):
         """Fit the K-Means model to the dataset.
 
@@ -140,6 +137,43 @@ class KMeans:
         """        
         raise NotImplementedError("Distance computation not implemented yet.")
     
+    def _assign_clusters(self, X: np.ndarray, centroids: np.ndarray) -> np.ndarray:
+        """Assign each sample in X to the nearest centroid
+
+        Args:
+            X (np.ndarray): Input data
+            centroids (np.ndarray): Current centroid positions.
+
+        Raises:
+            ValueError: X and centroids must be 2D arrays
+
+        Returns:
+            np.ndarray: Index of the closest centroid for each sample.
+            labels: Index of the closest centroid for each sample.
+         
+        Notes:    
+        This method computes squared Euclidean distance using fully
+        vectorized numpy operations: distance(i, j) = || X[i] - centroids[j] ||^2
+        The closest centroid is chosen for each sample.
+        """        
+        if X.ndim != 2 or centroids.ndim != 2:
+            raise ValueError(".")
+        
+        # compute squared distanec using broadcasting:
+        # shape result: (n_sampled, n_clusters)
+        distances_matrix = np.sum(
+            (X[:, np.newaxis, :] - centroids[np.newaxis, :, :]) ** 2,
+            axis=2,
+        )
+        
+        #cluster labels = index of the nearest centroid
+        labels = np.argmin(distances_matrix, axis=1)
+
+        # squared distances to the assigned centroid
+        min_distances = distances_matrix[np.arange(X.shape[0]), labels]
+        
+        return labels, min_distances
+        
     def __repr__(self):
         return (
             f"KMeans(n_clusters={self.n_clusters})"
