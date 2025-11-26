@@ -81,3 +81,27 @@ class KMeans:
             np.ndarray: _description_
         """        
         raise NotImplementedError("Predict method not implemented yet.")
+    
+    def _euclidean_distance(self, X: np.ndarray, centroids: np.ndarray) -> np.ndarray:
+        """_summary_
+
+        Args:
+            X (np.ndarray): _description_
+            centroids (np.ndarray): _description_
+
+        Raises:
+            NotImplementedError: _description_
+
+        Returns:
+            np.ndarray: _description_
+        """        
+        raise NotImplementedError("Distance computation not implemented yet.")
+    
+    def __repr__(self):
+        return (
+            f"KMeans(n_clusters={self.n_clusters})"
+            f"init='{self.init}"
+            f"max_iter={self.max_iter}"
+            f"tol={self.tol}"
+            f"random_state={self.random_state}"
+        )

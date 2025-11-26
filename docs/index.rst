@@ -27,8 +27,9 @@ Contents
 ========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
+   kmeans_project.kmeans
    Overview <readme>
    Contributions & Help <contributing>
    License <license>
