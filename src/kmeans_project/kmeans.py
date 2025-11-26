@@ -2,13 +2,7 @@ import numpy as np
 from typing import Optional
 
 class KMeans:
-    """Skeleton of a custom K-Means clustering class.
-
-    Raises:
-        NotImplementedError: _description_
-        NotImplementedError: _description_
-        NotImplementedError: _description_
-    """    """_summary_
+    """Custom implementation of the K-Means clustering algorithm.
     """    
     def __init__(
         self,
@@ -26,7 +20,7 @@ class KMeans:
 
         self.centroids = None
         self.labels_ = None
-        self.intertia_ = None
+        self.inertia_ = None
         self.n_iter_ = None
         
         if n_clusters <= 0:
@@ -157,7 +151,7 @@ class KMeans:
         The closest centroid is chosen for each sample.
         """        
         if X.ndim != 2 or centroids.ndim != 2:
-            raise ValueError(".")
+            raise ValueError("X and centroids must be 2D arrays.")
         
         # compute squared distanec using broadcasting:
         # shape result: (n_sampled, n_clusters)
@@ -175,14 +169,14 @@ class KMeans:
         return labels, min_distances
     
     def _update_centroids(self, X: np.ndarray, labels: np.ndarray) -> np.ndarray:
-        """_summary_
+        """Compute updated centroid positions based on cluster assignments
 
         Args:
-            X (np.ndarray): _description_
-            labels (np.ndarray): _description_
+            X (np.ndarray): Input data
+            labels (np.ndarray): Cluster index assigned to each sample.
 
         Returns:
-            np.ndarray: _description_
+            new_centroids (np.ndarray): Updated centroid Positions.
         """        
         n_samples, n_features = X.shape
         new_centroids = np.zeros((self.n_clusters, n_features), dtype=X.dtype)
@@ -201,9 +195,9 @@ class KMeans:
     
     def __repr__(self):
         return (
-            f"KMeans(n_clusters={self.n_clusters})"
-            f"init='{self.init}"
-            f"max_iter={self.max_iter}"
-            f"tol={self.tol}"
-            f"random_state={self.random_state}"
+            f"KMeans(n_clusters={self.n_clusters}, "
+            f"init='{self.init}', "
+            f"max_iter={self.max_iter}, "
+            f"tol={self.tol}, "
+            f"random_state={self.random_state})"
         )
