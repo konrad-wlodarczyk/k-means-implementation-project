@@ -173,7 +173,32 @@ class KMeans:
         min_distances = distances_matrix[np.arange(X.shape[0]), labels]
         
         return labels, min_distances
+    
+    def _update_centroids(self, X: np.ndarray, labels: np.ndarray) -> np.ndarray:
+        """_summary_
+
+        Args:
+            X (np.ndarray): _description_
+            labels (np.ndarray): _description_
+
+        Returns:
+            np.ndarray: _description_
+        """        
+        n_samples, n_features = X.shape
+        new_centroids = np.zeros((self.n_clusters, n_features), dtype=X.dtype)
+        rng = np.random.default_rng(self.random_state)
         
+        for cluster_idx in range(self.n_clusters):
+            cluster_points = X[labels == cluster_idx]
+            
+            if len(cluster_points) == 0:
+                # empty cluster: reinitialize randomly
+                new_centroids[cluster_idx] = X[rng.integers(0, n_samples)]
+            else:
+                new_centroids[cluster_idx] = cluster_points.mean(axis=0)
+        
+        return new_centroids
+    
     def __repr__(self):
         return (
             f"KMeans(n_clusters={self.n_clusters})"
