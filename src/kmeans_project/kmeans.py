@@ -127,18 +127,26 @@ class KMeans:
         return self
     
     def predict(self, X: np.ndarray) -> np.ndarray:
-        """Predict closest cluster for each sample.
+        """Assign each sample in X to the nearest cluster centroid.
 
         Args:
-            X (np.ndarray): _description_
+            X (np.ndarray): New data to assign to clusters.
 
         Raises:
-            NotImplementedError: _description_
+            ValueError: If the model has not been fitted or if X is not a 2D array.
 
         Returns:
-            np.ndarray: _description_
+            labels (np.ndarray): Index of the closest centroid for each sample.
         """        
-        raise NotImplementedError("Predict method not implemented yet.")
+        if self.centroids is None:
+            raise ValueError("Model has not been fitted. Call fit(X) before predict(X).")
+        
+        if X.ndim != 2:
+            raise ValueError("X must be a 2D array of shape (n_samples, n_features).")
+        
+        labels, _ = self._assign_clusters(X, self.centroids)
+        
+        return labels
     
     def _euclidean_distance(self, X: np.ndarray, centroids: np.ndarray) -> np.ndarray:
         """_summary_
