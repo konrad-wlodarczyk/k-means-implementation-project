@@ -121,7 +121,7 @@ class KMeans:
             
         self.centroids = centroids
         self.labels_ = labels
-        self.inertia_ = float(distances.sum())
+        self.inertia_ = self._compute_inertia(X, labels, centroids)
         self.n_iter_ = iteration + 1
         
         return self
@@ -225,6 +225,22 @@ class KMeans:
         
         return new_centroids
     
+    def _compute_inertia(self, X: np.ndarray, labels: np.ndarray, centroids: np.ndarray) -> float:
+        """Compute K-Means inertia (sum of squared distances to assigned centroids)
+
+        Args:
+            X (np.ndarray): ndarray of shape (n_samples, n_features)
+            labels (np.ndarray): ndarray of shape (n_samples,)
+            centroids (np.ndarray): ndarray of shape (n_clusters, n_features)
+
+        Returns:
+            float: Sum of squared distances of samples to their closest centroid.
+        """        
+        distances = np.sum((X - centroids[labels]) ** 2, axis=1)
+        return float(distances.sum())
+        
+        
+        
     def __repr__(self):
         return (
             f"KMeans(n_clusters={self.n_clusters}, "
