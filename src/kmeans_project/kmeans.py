@@ -92,15 +92,39 @@ class KMeans:
             )
         
     def fit(self, X: np.ndarray):
-        """Fit the K-Means model to the dataset.
-
-        Args:
-            X (np.ndarray): _description_
+          
+        """Compute K-Means clustering on dataset X.
 
         Raises:
-            NotImplementedError: _description_
+            ValueError: _description_
+
+        Returns:
+            self: object
         """        
-        raise NotImplementedError("Fir method not implemented yet.")
+        if X.ndim != 2:
+            raise ValueError("X must be a 2D arraty of shape (n_samples, n_features).")
+        
+        centroids = self._initialize_centroids(X)
+        
+        for iteration in range(self.max_iter):
+            labels, distances = self._assign_clusters(X, centroids)
+            
+            new_centroids = self._update_centroids(X, labels)
+            
+            centroid_shift = np.linalg.norm(new_centroids - centroids)
+            
+            if centroid_shift < self.tol:
+                cenotroids = new_centroids
+                break
+            
+            centroids = new_centroids
+            
+        self.centroids = centroids
+        self.labels_ = labels
+        self.inertia_ = float(distances.sum())
+        self.n_iter_ = iteration + 1
+        
+        return self
     
     def predict(self, X: np.ndarray) -> np.ndarray:
         """Predict closest cluster for each sample.
