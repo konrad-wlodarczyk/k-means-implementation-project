@@ -92,29 +92,61 @@ class KMeans:
             )
         
     def fit(self, X: np.ndarray):
-        """Fit the K-Means model to the dataset.
-
-        Args:
-            X (np.ndarray): _description_
+          
+        """Compute K-Means clustering on dataset X.
 
         Raises:
-            NotImplementedError: _description_
-        """        
-        raise NotImplementedError("Fir method not implemented yet.")
-    
-    def predict(self, X: np.ndarray) -> np.ndarray:
-        """Predict closest cluster for each sample.
-
-        Args:
-            X (np.ndarray): _description_
-
-        Raises:
-            NotImplementedError: _description_
+            ValueError: _description_
 
         Returns:
-            np.ndarray: _description_
+            self: object
         """        
-        raise NotImplementedError("Predict method not implemented yet.")
+        if X.ndim != 2:
+            raise ValueError("X must be a 2D arraty of shape (n_samples, n_features).")
+        
+        centroids = self._initialize_centroids(X)
+        
+        for iteration in range(self.max_iter):
+            labels, distances = self._assign_clusters(X, centroids)
+            
+            new_centroids = self._update_centroids(X, labels)
+            
+            centroid_shift = np.linalg.norm(new_centroids - centroids)
+            
+            if centroid_shift < self.tol:
+                cenotroids = new_centroids
+                break
+            
+            centroids = new_centroids
+            
+        self.centroids = centroids
+        self.labels_ = labels
+        self.inertia_ = self._compute_inertia(X, labels, centroids)
+        self.n_iter_ = iteration + 1
+        
+        return self
+    
+    def predict(self, X: np.ndarray) -> np.ndarray:
+        """Assign each sample in X to the nearest cluster centroid.
+
+        Args:
+            X (np.ndarray): New data to assign to clusters.
+
+        Raises:
+            ValueError: If the model has not been fitted or if X is not a 2D array.
+
+        Returns:
+            labels (np.ndarray): Index of the closest centroid for each sample.
+        """        
+        if self.centroids is None:
+            raise ValueError("Model has not been fitted. Call fit(X) before predict(X).")
+        
+        if X.ndim != 2:
+            raise ValueError("X must be a 2D array of shape (n_samples, n_features).")
+        
+        labels, _ = self._assign_clusters(X, self.centroids)
+        
+        return labels
     
     def _euclidean_distance(self, X: np.ndarray, centroids: np.ndarray) -> np.ndarray:
         """_summary_
@@ -193,6 +225,22 @@ class KMeans:
         
         return new_centroids
     
+    def _compute_inertia(self, X: np.ndarray, labels: np.ndarray, centroids: np.ndarray) -> float:
+        """Compute K-Means inertia (sum of squared distances to assigned centroids)
+
+        Args:
+            X (np.ndarray): ndarray of shape (n_samples, n_features)
+            labels (np.ndarray): ndarray of shape (n_samples,)
+            centroids (np.ndarray): ndarray of shape (n_clusters, n_features)
+
+        Returns:
+            float: Sum of squared distances of samples to their closest centroid.
+        """        
+        distances = np.sum((X - centroids[labels]) ** 2, axis=1)
+        return float(distances.sum())
+        
+        
+        
     def __repr__(self):
         return (
             f"KMeans(n_clusters={self.n_clusters}, "
