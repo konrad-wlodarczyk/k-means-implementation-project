@@ -10,7 +10,7 @@ cluster_3 = rng.normal(loc=[5, 2], scale=1.0, size=(100, 2))
 
 X = np.vstack([cluster_1, cluster_2, cluster_3])
 
-model = KMeans(n_clusters=3, init="k_means++", random_state=0)
+model = KMeans(n_clusters=3, init="k-means++", random_state=0)
 model.fit(X)
 labels = model.labels_
 centroids = model.centroids
