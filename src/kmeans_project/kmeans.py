@@ -4,7 +4,7 @@ from typing import Optional
 class KMeans:
     """Custom implementation of the K-Means clustering algorithm.
     
-    This class provide a basic implementation of the k-Means clustering
+    This class provides a basic implementation of the k-Means clustering
     procedure, including support for random and k-means++ centroid initialization,
     an iterative refinement procedure, and computation of inertia and cluster labels.
     """    
@@ -71,7 +71,7 @@ class KMeans:
         Initialize cluster centroids according to the selected strategy.
         
         Args:
-            X (np.ndarray): Input data from which initial centorids will be selected
+            X (np.ndarray): Input data from which initial centroids will be selected
 
         Raises:
             ValueError: If X is not a 2D array.
@@ -125,12 +125,15 @@ class KMeans:
     def fit(self, X: np.ndarray):
           
         """Compute K-Means clustering on dataset X.
+        
+        Args:
+            X (np.ndarray): Training data of shape (n_samples, n_features).
 
         Raises:
             ValueError: X must be a 2D arraty of shape (n_samples, n_features).
 
         Returns:
-            self: object
+            KMeans: The fitted Kmeans instance (self)
         """        
         if X.ndim != 2:
             raise ValueError("X must be a 2D arraty of shape (n_samples, n_features).")
@@ -183,15 +186,19 @@ class KMeans:
         """Assign each sample in X to the nearest centroid
 
         Args:
-            X (np.ndarray): Input data
-            centroids (np.ndarray): Current centroid positions.
+            X (np.ndarray): Input data of shape (n_samples, n_features).
+            centroids (np.ndarray): Current centroid positions of shape
+            (n_clusters, n_features).
 
         Raises:
             ValueError: X and centroids must be 2D arrays
 
         Returns:
-            np.ndarray: Index of the closest centroid for each sample.
-            labels: Index of the closest centroid for each sample.
+        tuple:
+            labels (np.ndarray): Array of shape (n_samples,) with the index
+                of the closest centroid for each sample.
+            distances (np.ndarray): Array of shape (n_samples,) containing
+                the squared distance of each sample to its assigned centroid.
          
         Notes:    
         This method computes squared Euclidean distance using fully
@@ -220,11 +227,13 @@ class KMeans:
         """Compute updated centroid positions based on cluster assignments
 
         Args:
-            X (np.ndarray): Input data
-            labels (np.ndarray): Cluster index assigned to each sample.
-a
+            X (np.ndarray): Input data of shape (n_samples, n_features).
+            labels (np.ndarray): Cluster index assigned to each sample,
+                of shape (n_samples,).
+            
         Returns:
-            new_centroids (np.ndarray): Updated centroid Positions.
+            new_centroids (np.ndarray): Updated centroid Positions of shape
+                (n_clusters, n_features).
         """        
         n_samples, n_features = X.shape
         new_centroids = np.zeros((self.n_clusters, n_features), dtype=X.dtype)
