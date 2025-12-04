@@ -148,21 +148,6 @@ class KMeans:
         
         return labels
     
-    def _euclidean_distance(self, X: np.ndarray, centroids: np.ndarray) -> np.ndarray:
-        """_summary_
-
-        Args:
-            X (np.ndarray): _description_
-            centroids (np.ndarray): _description_
-
-        Raises:
-            NotImplementedError: _description_
-
-        Returns:
-            np.ndarray: _description_
-        """        
-        raise NotImplementedError("Distance computation not implemented yet.")
-    
     def _assign_clusters(self, X: np.ndarray, centroids: np.ndarray) -> np.ndarray:
         """Assign each sample in X to the nearest centroid
 
