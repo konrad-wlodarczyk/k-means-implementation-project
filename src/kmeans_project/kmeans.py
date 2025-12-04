@@ -206,7 +206,7 @@ class KMeans:
         Args:
             X (np.ndarray): Input data
             labels (np.ndarray): Cluster index assigned to each sample.
-
+a
         Returns:
             new_centroids (np.ndarray): Updated centroid Positions.
         """        
