@@ -114,7 +114,7 @@ class KMeans:
             centroid_shift = np.linalg.norm(new_centroids - centroids)
             
             if centroid_shift < self.tol:
-                cenotroids = new_centroids
+                centroids = new_centroids
                 break
             
             centroids = new_centroids

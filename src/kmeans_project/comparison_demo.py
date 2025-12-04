@@ -12,10 +12,10 @@ def centroid_alignment_error(C1, C2):
     """Compute minimal centroid matchin errror between two sets of ceontroids
         using the Hungarian Algorithm.
     """    
-    cost_matrix = np.linalg.norm(C1[:, None, :] - C2[None, :, :], axis=2)
-    row_ind, col_ind = linear_sum_assignment(cost_matrix)
+    cost = np.linalg.norm(C1[:, None, :] - C2[None, :, :], axis=2)
+    r, c = linear_sum_assignment(cost)
     
-    return cost_matrix[row_ind, col_ind].sum()
+    return cost[r, c].sum()
 
 def compare_kmeans(X, n_clusters=3, random_state=42):
     # Fit custom Kmeans
@@ -70,9 +70,9 @@ def compare_kmeans(X, n_clusters=3, random_state=42):
     
 X, y_true = make_blobs(
     n_samples=1000,
-    centers=3,
+    centers=45,
     cluster_std=0.60,
     random_state=42,
 )
 
-compare_kmeans(X, n_clusters=3, random_state=42)
+compare_kmeans(X, n_clusters=15, random_state=42)
