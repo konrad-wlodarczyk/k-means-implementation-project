@@ -3,6 +3,10 @@ from typing import Optional
 
 class KMeans:
     """Custom implementation of the K-Means clustering algorithm.
+    
+    This class provide a basic implementation of the k-Means clustering
+    procedure, including support for random and k-means++ centroid initialization,
+    an iterative refinement procedure, and computation of inertia and cluster labels.
     """    
     def __init__(
         self,
@@ -12,6 +16,33 @@ class KMeans:
         tol: float = 1e-4,
         random_state: Optional[int] = None,
     ):
+        """
+        Initialize a KMeans instance.
+
+        Args:
+            n_clusters (int): The number of clusters to form.
+            init (str, optional): Method for centroid initialization.
+                Supported options are:
+                - "random": choose initial centroids uniformly at random
+                  from the data.
+                - "k-means++": use the k-means++ initialization strategy.
+                Defaults to "random".
+            max_iter (int, optional): Maximum number of iterations of the
+                K-Means algorithm for a single run. Defaults to 300.
+            tol (float, optional): Tolerance for convergence. The algorithm
+                stops when the Euclidean norm of the change in centroids
+                between two consecutive iterations is less than this value.
+                Defaults to 1e-4.
+            random_state (Optional[int], optional): Seed for the random number
+                generator, used to ensure reproducible initialization.
+                Defaults to None.
+
+        Raises:
+            ValueError: If `n_clusters <= 0`.
+            ValueError: If `init` is not "random" or "k-means++".
+            ValueError: If `max_iter <= 0`.
+            ValueError: If `tol <= 0`.
+        """
         self.n_clusters = n_clusters
         self.init = init
         self.max_iter = max_iter
@@ -37,16 +68,16 @@ class KMeans:
 
     def _initialize_centroids(self, X: np.ndarray) -> np.ndarray:
         """
-        Placeholder for centroid initialization logic.
+        Initialize cluster centroids according to the selected strategy.
         
         Args:
-            X (np.ndarray): _description_
+            X (np.ndarray): Input data from which initial centorids will be selected
 
         Raises:
-            NotImplementedError: _description_
+            ValueError: If X is not a 2D array.
 
         Returns:
-            np.ndarray: _description_
+            np.ndarray: The initialized centroids.
         """        
         if X.ndim != 2:
             raise ValueError("X must be a 2D array of shape (n_samples, n_features).")
@@ -96,7 +127,7 @@ class KMeans:
         """Compute K-Means clustering on dataset X.
 
         Raises:
-            ValueError: _description_
+            ValueError: X must be a 2D arraty of shape (n_samples, n_features).
 
         Returns:
             self: object
