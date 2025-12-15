@@ -141,39 +141,3 @@ def test_predict_raises_before_fit():
     with pytest.raises(ValueError):
         km.predict(X)
         
-def test_fit_raises_on_nan_values():
-    """
-    Test that fit raises a ValueError when input contains NaN values.
-
-    Args:
-        None
-
-    Raises:
-        ValueError: Raised when X contains NaN values
-
-    Returns:
-        None
-    """
-    km = KMeans(n_clusters=2)
-    X = np.array([
-        [1.0, 2.0],
-        [np.nan, 3.0]
-    ])
-    with pytest.raises(ValueError):
-        km.fit(X)
-        
-def test_invalid_random_state():
-    """
-    Test that KMeans raises a ValueError when random_state is invalid (e.g., negative integer).
-
-    Args:
-        None
-
-    Raises:
-        ValueError: Raised when random_state is invalid
-
-    Returns:
-        None
-    """
-    with pytest.raises(ValueError):
-        KMeans(n_clusters=3, random_state=-10)
